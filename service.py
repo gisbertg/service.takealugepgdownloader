@@ -8,7 +8,7 @@ import gzip
 import shutil
 from resources.lib import weblogin
 from cookielib import LWPCookieJar
-import
+import time
 
 #test2
 
