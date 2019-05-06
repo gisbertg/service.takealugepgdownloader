@@ -10,6 +10,8 @@ from resources.lib import weblogin
 from cookielib import LWPCookieJar
 import
 
+#test2
+
 usrsettings = xbmcaddon.Addon(id="service.takealugepgdownloader")
 script_file = os.path.realpath(__file__).decode('utf-8')
 addondir = os.path.dirname(script_file).decode('utf-8')
