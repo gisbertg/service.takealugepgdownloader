@@ -1,18 +1,13 @@
 import xbmcgui
 import sys
 import os
-import subprocess
 import xbmc
 import xbmcaddon
 import requests
-import random
-import xbmcvfs
 import gzip
 import shutil
-import tarfile
 from resources.lib import weblogin
 from cookielib import LWPCookieJar
-import threading
 import time
 
 usrsettings = xbmcaddon.Addon(id="service.takealugepgdownloader")
