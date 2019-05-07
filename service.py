@@ -58,7 +58,7 @@ def download_and_move(session, url):
     with open(gz_file, 'wb') as f:
         f.write(r.content)
     
-    with open(os.path.join(speicherort, 'guide.xml'), 'wb') as f_xml:
+    with open(os.path.join(temp, 'guide.xml'), 'wb') as f_xml:
         with gzip.open(gz_file, 'rb') as f_in:
             f_xml.write(f_in.read())
 
@@ -190,9 +190,9 @@ def worker(next_download):
         # otherwise download it.
 
         last_file = os.path.join(temp, 'guide.gz')
-        last_timestamp = os.path.getmtime(last_file)
 
         if os.path.exists(last_file):
+            last_timestamp = os.path.getmtime(last_file)
             log('Timestamp of last downloaded archive is %s' % datetime.datetime.fromtimestamp(last_timestamp).strftime('%d.%m.%Y %H:%M'))
             if (int(time.time()) - 86400) < last_timestamp < int(time.time()):
                 log('Waiting for next download at %s' % datetime.datetime.fromtimestamp(next_download).strftime('%d.%m.%Y %H:%M'))
