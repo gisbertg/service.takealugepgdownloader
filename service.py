@@ -5,7 +5,6 @@ import xbmc
 import xbmcaddon
 import requests
 import gzip
-import shutil
 from resources.lib import weblogin
 from cookielib import LWPCookieJar
 import time
@@ -35,10 +34,11 @@ def download_and_move(session, url):
     gz_file = os.path.join(temp, "guide.gz")
     with open(gz_file, 'wb') as f:
         f.write(r.content)
-    with gzip.open(gz_file, 'rb') as f_in:
-        with open(os.path.join(speicherort, 'guide.xml'), 'wb') as f_out:
-            shutil.copyfileobj(f_in, f_out)
-        Notify('Guide Stored', speicherort)
+    
+    with open(os.path.join(speicherort, 'guide.xml'), 'wb') as f_xml:
+        with gzip.open(gz_file, 'rb') as f_in:
+            f_xml.write(f_in.read())
+    Notify('Guide Stored', speicherort)
 
 def LOGIN(username,password,hidesuccess):
         uc = username[0].upper() + username[1:]
@@ -162,7 +162,7 @@ def de_at_ch_free():
         s.cookies = LWPCookieJar(cookie)
         s.cookies.load(ignore_discard=True)
         url = server1+'/download/1271/'
-        download_and_move(url)
+        download_and_move(s, url)
 
 
 def easy_epg_free():
