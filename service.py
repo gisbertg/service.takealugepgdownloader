@@ -30,8 +30,8 @@ def Notify(title,message):
 # make a function for download, temporal storage and moving guide.xml to destination,
 # as this is the same for all download types
 
-def download_and_move(url):
-    r = s.get(url)
+def download_and_move(session, url):
+    r = session.get(url)
     gz_file = os.path.join(temp, "guide.gz")
     with open(gz_file, 'wb') as f:
         f.write(r.content)
@@ -118,7 +118,7 @@ def de_at_ch_premium():
             if hidesuccess == 'false':
                 Notify('Sorry '+uc,'You need Premium Membership for this File')
         elif logged_inpremium == True:
-            download_and_move(url)
+            download_and_move(s, url)
 
 
 def easy_epg_premium():
@@ -130,7 +130,7 @@ def easy_epg_premium():
             if hidesuccess == 'false':
                 Notify('Sorry '+uc,'You need Premium Membership for this File')
         elif logged_inpremium == True: 
-            download_and_move(url)
+            download_and_move(s, url)
 
 
 def zattoo_de_premium():
@@ -142,7 +142,7 @@ def zattoo_de_premium():
             if hidesuccess == 'false':
                 Notify('Sorry '+uc,'You need Premium Membership for this File')
         elif logged_inpremium == True: 
-            download_and_move(url)
+            download_and_move(s, url)
 
 
 def zattoo_ch_premium():
@@ -154,7 +154,7 @@ def zattoo_ch_premium():
             if hidesuccess == 'false':
                 Notify('Sorry '+uc,'You need Premium Membership for this File')
         elif logged_inpremium == True: 
-            download_and_move(url)
+            download_and_move(s, url)
 
 
 def de_at_ch_free():
@@ -170,7 +170,7 @@ def easy_epg_free():
         s.cookies = LWPCookieJar(cookie)
         s.cookies.load(ignore_discard=True)
         url = server1+'/download/1125/'
-        download_and_move(url)
+        download_and_move(s, url)
 
 
 def zattoo_de_free():
@@ -178,7 +178,7 @@ def zattoo_de_free():
         s.cookies = LWPCookieJar(cookie)
         s.cookies.load(ignore_discard=True)
         url = server1+'/download/1126/'
-        download_and_move(url)
+        download_and_move(s, url)
 
 
 def zattoo_ch_free():
@@ -186,7 +186,7 @@ def zattoo_ch_free():
         s.cookies = LWPCookieJar(cookie)
         s.cookies.load(ignore_discard=True)
         url = server1+'/download/1127/'
-        download_and_move(url)
+        download_and_move(s, url)
 
 
 #Download Files
