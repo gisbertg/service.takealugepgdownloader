@@ -162,7 +162,7 @@ def de_at_ch_free():
         s.cookies = LWPCookieJar(cookie)
         s.cookies.load(ignore_discard=True)
         url = server1+'/download/1271/'
-        download_and_move(url)
+        download_and_move(s, url)
 
 
 def easy_epg_free():
