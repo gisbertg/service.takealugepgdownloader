@@ -11,36 +11,47 @@ from cookielib import LWPCookieJar
 import time
 
 usrsettings = xbmcaddon.Addon(id="service.takealugepgdownloader")
-script_file = os.path.realpath(__file__).decode('utf-8')
-addondir = os.path.dirname(script_file).decode('utf-8')
 speicherort = usrsettings.getSetting("path").decode('utf-8')
 server1 = 'https://takealug.de/wordpress'
 username = usrsettings.getSetting('username')
-uc = username[0].upper() + username[1:]
+uc = username.capitalize()
 password = usrsettings.getSetting('password')
 choose_epg = usrsettings.getSetting('choose_epg')
 auto_download = usrsettings.getSetting('auto_download')
 timeswitch = usrsettings.getSetting('timeswitch')
-__datapath__ = xbmc.translatePath("special://userdata/addon_data/service.takealugepgdownloader/")
-cookie = xbmc.translatePath("special://userdata/addon_data/service.takealugepgdownloader/cookies.lwp")
+datapath = xbmc.translatePath(usrsettings.getAddonInfo('profile'))
+cookie = os.path.join(datapath, "cookies.lwp")
+temp = os.path.join(datapath, "temp")
 hidesuccess = usrsettings.getSetting('hide-successful-login-messages')
-use_account = usrsettings.getSetting('use-account')
 
 def Notify(title,message):
         xbmc.executebuiltin("XBMC.Notification("+title+","+message+")")
+
+# make a function for download, temporal storage and moving guide.xml to destination,
+# as this is the same for all download types
+
+def download_and_move(url):
+    r = s.get(url)
+    gz_file = os.path.join(temp, "guide.gz")
+    with open(gz_file, 'wb') as f:
+        f.write(r.content)
+    with gzip.open(gz_file, 'rb') as f_in:
+        with open(os.path.join(speicherort, 'guide.xml'), 'wb') as f_out:
+            shutil.copyfileobj(f_in, f_out)
+        Notify('Guide Stored', speicherort)
 
 def LOGIN(username,password,hidesuccess):
         uc = username[0].upper() + username[1:]
         lc = username.lower()
         
-        logged_inpremium = weblogin.doLoginPremium(__datapath__,username,password)
+        logged_inpremium = weblogin.doLoginPremium(datapath, username, password)
         
         if logged_inpremium == True:
             if hidesuccess == 'false':
                 Notify('Welcome back '+uc,'Thank you for donating!')
                 
         elif logged_inpremium == False:
-            logged_in = weblogin.doLogin(__datapath__,username,password)
+            logged_in = weblogin.doLogin(datapath, username, password)
         
             if logged_in == True:
                 if hidesuccess == 'false':
@@ -49,24 +60,16 @@ def LOGIN(username,password,hidesuccess):
             elif logged_in == False:
                 Notify('Login Failure',uc+' could not login')
     
-logged_inpremium = weblogin.doLoginPremium(__datapath__,username,password)
+logged_inpremium = weblogin.doLoginPremium(datapath, username, password)
     
                 
 def STARTUP_ROUTINES():
-        #deal with bug that happens if the datapath doesn't exist
-        if not os.path.exists(__datapath__):
-          os.makedirs(__datapath__)
-        
-        if not os.path.exists(__datapath__+'/temp'):
-          os.makedirs(__datapath__+'/temp')
-        
-        #check if user has enabled use-login setting
-        use_account = usrsettings.getSetting('use-account')
-
-        if use_account == 'true':
-             #get username and password and do login with them
-             #also get whether to hid successful login notification
-             LOGIN(username,password,hidesuccess) 
+        #deal with bug that happens if the datapath and/or temp doesn't exist
+        if not os.path.exists(temp):
+            os.makedirs(temp)
+        #get username and password and do login with them
+        #also get whether to hid successful login notification
+        LOGIN(username,password,hidesuccess)
 
 
 STARTUP_ROUTINES()
@@ -114,14 +117,9 @@ def de_at_ch_premium():
         if logged_inpremium == False:
             if hidesuccess == 'false':
                 Notify('Sorry '+uc,'You need Premium Membership for this File')
-        elif logged_inpremium == True: 
-            r = s.get(url)
-            with open(__datapath__+'temp/guide.gz', 'wb') as f:
-                f.write(r.content)            
-            with gzip.open(__datapath__+'temp/guide.gz', 'rb') as f_in:
-                with open(speicherort+'guide.xml', 'wb') as f_out:
-                    shutil.copyfileobj(f_in, f_out)
-                Notify('Guide Stored', speicherort) 
+        elif logged_inpremium == True:
+            download_and_move(url)
+
 
 def easy_epg_premium():
     with requests.Session() as s:
@@ -132,13 +130,8 @@ def easy_epg_premium():
             if hidesuccess == 'false':
                 Notify('Sorry '+uc,'You need Premium Membership for this File')
         elif logged_inpremium == True: 
-            r = s.get(url)
-            with open(__datapath__+'temp/guide.gz', 'wb') as f:
-                f.write(r.content)            
-            with gzip.open(__datapath__+'temp/guide.gz', 'rb') as f_in:
-                with open(speicherort+'guide.xml', 'wb') as f_out:
-                    shutil.copyfileobj(f_in, f_out)
-                Notify('Guide Stored', speicherort)
+            download_and_move(url)
+
 
 def zattoo_de_premium():
     with requests.Session() as s:
@@ -149,13 +142,8 @@ def zattoo_de_premium():
             if hidesuccess == 'false':
                 Notify('Sorry '+uc,'You need Premium Membership for this File')
         elif logged_inpremium == True: 
-            r = s.get(url)
-            with open(__datapath__+'temp/guide.gz', 'wb') as f:
-                f.write(r.content)            
-            with gzip.open(__datapath__+'temp/guide.gz', 'rb') as f_in:
-                with open(speicherort+'guide.xml', 'wb') as f_out:
-                    shutil.copyfileobj(f_in, f_out)
-            Notify('Guide Stored', speicherort)
+            download_and_move(url)
+
 
 def zattoo_ch_premium():
     with requests.Session() as s:
@@ -166,69 +154,44 @@ def zattoo_ch_premium():
             if hidesuccess == 'false':
                 Notify('Sorry '+uc,'You need Premium Membership for this File')
         elif logged_inpremium == True: 
-            r = s.get(url)
-            with open(__datapath__+'temp/guide.gz', 'wb') as f:
-                f.write(r.content)            
-            with gzip.open(__datapath__+'temp/guide.gz', 'rb') as f_in:
-                with open(speicherort+'guide.xml', 'wb') as f_out:
-                    shutil.copyfileobj(f_in, f_out)
-            Notify('Guide Stored', speicherort)
-        
+            download_and_move(url)
+
+
 def de_at_ch_free():
     with requests.Session() as s:
         s.cookies = LWPCookieJar(cookie)
         s.cookies.load(ignore_discard=True)
         url = server1+'/download/1271/'
-        r = s.get(url)
-        with open(__datapath__+'temp/guide.gz', 'wb') as f:
-            f.write(r.content)            
-        with gzip.open(__datapath__+'temp/guide.gz', 'rb') as f_in:
-            with open(speicherort+'guide.xml', 'wb') as f_out:
-                shutil.copyfileobj(f_in, f_out)
-        Notify('Guide Stored', speicherort)
+        download_and_move(url)
+
 
 def easy_epg_free():
     with requests.Session() as s:
         s.cookies = LWPCookieJar(cookie)
         s.cookies.load(ignore_discard=True)
         url = server1+'/download/1125/'
-        r = s.get(url)
-        with open(__datapath__+'temp/guide.gz', 'wb') as f:
-            f.write(r.content)            
-        with gzip.open(__datapath__+'temp/guide.gz', 'rb') as f_in:
-            with open(speicherort+'guide.xml', 'wb') as f_out:
-                shutil.copyfileobj(f_in, f_out)
-        Notify('Guide Stored', speicherort)
+        download_and_move(url)
+
 
 def zattoo_de_free():
     with requests.Session() as s:
         s.cookies = LWPCookieJar(cookie)
         s.cookies.load(ignore_discard=True)
         url = server1+'/download/1126/'
-        r = s.get(url)
-        with open(__datapath__+'temp/guide.gz', 'wb') as f:
-            f.write(r.content)            
-        with gzip.open(__datapath__+'temp/guide.gz', 'rb') as f_in:
-            with open(speicherort+'guide.xml', 'wb') as f_out:
-                shutil.copyfileobj(f_in, f_out)
-        Notify('Guide Stored', speicherort)
+        download_and_move(url)
+
 
 def zattoo_ch_free():
     with requests.Session() as s:
         s.cookies = LWPCookieJar(cookie)
         s.cookies.load(ignore_discard=True)
         url = server1+'/download/1127/'
-        r = s.get(url)
-        with open(__datapath__+'temp/guide.gz', 'wb') as f:
-            f.write(r.content)            
-        with gzip.open(__datapath__+'temp/guide.gz', 'rb') as f_in:
-            with open(speicherort+'guide.xml', 'wb') as f_out:
-                shutil.copyfileobj(f_in, f_out)
-        Notify('Guide Stored', speicherort)                
+        download_and_move(url)
+
 
 #Download Files
 def AUTO():
-    logged_in = weblogin.doLogin(__datapath__,username,password)
+    logged_in = weblogin.doLogin(datapath, username, password)
     if logged_in == True:
         if speicherort == 'choose': 
             Notify('Sorry '+uc,'You need to choose your Downloadlocation first')                    
@@ -236,10 +199,9 @@ def AUTO():
             if choose_epg == 'None':
                 Notify('Sorry '+uc,'You need to choose your EPG first')
             else:
-                if use_account == 'true':
-                    if auto_download == 'true':        
-                        Notify('Auto-Download', choose_epg)
-                        takealug_download()
+                if auto_download == 'true':
+                    Notify('Auto-Download', choose_epg)
+                    takealug_download()
 
 if auto_download == 'true':
     AUTO()
@@ -254,7 +216,7 @@ def manual_download():
     return manual_download
 
 if manual_download() == True:
-    logged_in = weblogin.doLogin(__datapath__,username,password)
+    logged_in = weblogin.doLogin(datapath, username, password)
     if logged_in == True:
         if speicherort == 'choose': 
             Notify('Sorry '+uc,'You need to choose your Downloadlocation first')                    
@@ -276,7 +238,7 @@ def worker():
   worker()
 
 if timeswitch == 'true':
-    logged_in = weblogin.doLogin(__datapath__,username,password)    
+    logged_in = weblogin.doLogin(datapath, username, password)
     if logged_in == True:
         if speicherort == 'choose': 
             Notify('Sorry '+uc,'You need to choose your Downloadlocation first')                    
@@ -284,4 +246,4 @@ if timeswitch == 'true':
             if choose_epg == 'None':
                 Notify('Sorry '+uc,'You need to choose your EPG first')
             else:
-                worker()    
+                worker()
