@@ -3,6 +3,7 @@ import sys
 import os
 import xbmc
 import xbmcaddon
+import xbmcvfs
 import requests
 import gzip
 from resources.lib import weblogin
@@ -35,9 +36,15 @@ def download_and_move(session, url):
     with open(gz_file, 'wb') as f:
         f.write(r.content)
     
-    with open(os.path.join(speicherort, 'guide.xml'), 'wb') as f_xml:
+    with open(os.path.join(temp, 'guide.xml'), 'wb') as f_xml:
         with gzip.open(gz_file, 'rb') as f_in:
             f_xml.write(f_in.read())
+        tin= os.path.join(temp, 'guide.xml')
+        fout = os.path.join(speicherort,'guide.xml')    
+        xbmcvfs.copy(tin, fout)
+        xbmcvfs.delete(gz_file)
+        xbmcvfs.delete(tin) 
+        xbmcvfs.delete(cookie)    
     Notify('Guide Stored', speicherort)
 
 def LOGIN(username,password,hidesuccess):
