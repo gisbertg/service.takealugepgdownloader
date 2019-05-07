@@ -4,7 +4,7 @@
         <setting id="username" type="text" label="Username" default="" />
         <setting id="password" type="text" label="Password" default="" option="hidden" />
         <setting id="auto_download" type="bool" label="Auto Download on Boot" default="false" />
-        <setting id="timeswitch" type="enum" label="Daily Download at " default="false" values="$HOURS" />
+        <setting id="timeswitch" type="enum" label="Daily Download at " default="0" values="$HOURS" />
         <setting id="path" type="folder" label="Download Folder" default="choose"/>
         <setting type="sep" label="Actions" />
         <setting id="manual_download" type="action" label="Initiate manual Download now" action="XBMC.RunScript(service.takealugepgdownloader, manual_download)" option="close" />
