@@ -3,8 +3,8 @@
         <setting id="hide-successful-login-messages" type="bool" label="Hide Login Messages" default="false" />
         <setting id="username" type="text" label="Username" default="" />
         <setting id="password" type="text" label="Password" default="" option="hidden" />
-        <setting id="auto_download" type="bool" label="Auto Download on Boot" default="false" />
-        <setting id="timeswitch" type="enum" label="Daily Download at " default="0" values="$HOURS" />
+        <setting id="auto_download" type="bool" label="use automatic Download" default="false" />
+        <setting id="timeswitch" type="enum" label="Daily Download at " default="0" values="$HOURS" enable="eq(-1,true)" />
         <setting id="path" type="folder" label="Download Folder" default="choose"/>
         <setting type="sep" label="Actions" />
         <setting id="manual_download" type="action" label="Initiate manual Download now" action="XBMC.RunScript(service.takealugepgdownloader, manual_download)" option="close" />
