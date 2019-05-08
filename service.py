@@ -9,7 +9,7 @@ import gzip
 from resources.lib import weblogin
 from cookielib import LWPCookieJar
 import time
-import datetime
+from datetime import datetime
 
 ADDON = xbmcaddon.Addon(id="service.takealugepgdownloader")
 addon_name = ADDON.getAddonInfo('name')
@@ -31,7 +31,7 @@ hidesuccess = True if ADDON.getSetting('hide-successful-login-messages').lower()
 try:
     next_download = int(ADDON.getSetting('next_download'))
 except ValueError:
-    ADDON.setSetting('next_download', '0')
+    ADDON.setSetting('next_download', str(int(time.time())))
 
 logged_in = weblogin.doLogin(datapath, username, password)
 logged_inpremium = weblogin.doLoginPremium(datapath, username, password)
@@ -196,10 +196,10 @@ def worker(next_download):
 
         if os.path.exists(last_file):
             last_timestamp = os.path.getmtime(last_file)
-            log('Timestamp of last downloaded archive is %s' % datetime.datetime.fromtimestamp(last_timestamp).strftime(
+            log('Timestamp of last downloaded archive is %s' % datetime.fromtimestamp(last_timestamp).strftime(
                 '%d.%m.%Y %H:%M'))
             if (int(time.time()) - 86400) < last_timestamp < int(time.time()):
-                log('Waiting for next download at %s' % datetime.datetime.fromtimestamp(next_download).strftime(
+                log('Waiting for next download at %s' % datetime.fromtimestamp(next_download).strftime(
                     '%d.%m.%Y %H:%M'))
             else:
                 log('Archive is older than 24 hours, initiate download')
@@ -216,7 +216,7 @@ def worker(next_download):
         if initiate_download:
             takealug_download()
 
-            calc_next_download = datetime.datetime.now()
+            calc_next_download = datetime.now()
             calc_next_download = calc_next_download.replace(day=calc_next_download.day + 1, hour=timeswitch, minute=0,
                                                             second=0, microsecond=0)
 
