@@ -122,3 +122,49 @@ msgstr ""
 msgctxt "#32031"
 msgid "Choose EPG File"
 msgstr ""
+
+# OSD Notifications
+
+msgctxt "#32040"
+msgid "EPG File stored"
+msgstr ""
+
+msgctxt "#32041"
+msgid "Sorry %s"
+msgstr ""
+
+msgctxt "#32042"
+msgid "You need Premium Membership for this File"
+msgstr ""
+
+msgctxt "#32043"
+msgid "Welcome back, %s"
+msgstr ""
+
+msgctxt "#32044"
+msgid "Thank You for donating!"
+msgstr ""
+
+msgctxt "#32045"
+msgid "Takealug say Hello!"
+msgstr ""
+
+msgctxt "#32046"
+msgid "Login Failure"
+msgstr ""
+
+msgctxt "#32047"
+msgid "%s couldn't logged in"
+msgstr ""
+
+msgctxt "#32048"
+msgid "You need to choose your Downloadlocation first"
+msgstr ""
+
+msgctxt "#32049"
+msgid "You need to choose your EPG first"
+msgstr ""
+
+msgctxt "#32050"
+msgid "Start manual Download of %s?"
+msgstr ""

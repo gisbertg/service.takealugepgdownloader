@@ -69,10 +69,15 @@ def download_and_move(session, url):
 
     tin = os.path.join(temp, 'guide.xml')
     fout = os.path.join(speicherort, 'guide.xml')
-    xbmcvfs.copy(tin, fout)
-    xbmcvfs.delete(tin)
-    log(speicherort)
-    notify('Guide Stored', speicherort)
+
+    if not xbmcvfs.copy(tin, fout):
+        log('Could not copy to %s' % speicherort, xbmc.LOGERROR)
+        return False
+    if not xbmcvfs.delete(tin):
+        log('Could not delete % s' % tin, xbmc.LOGERROR)
+        return False
+    notify(lang_string(32040), fout)
+    return True
 
 
 def takealug_download():
@@ -102,7 +107,7 @@ def de_at_ch_premium():
         s.cookies.load(ignore_discard=True)
         url = server1 + '/download/879/'
         if logged_inpremium == False:
-            notify('Sorry %s' % uc, 'You need Premium Membership for this File', icon=xbmcgui.NOTIFICATION_WARNING)
+            notify(lang_string(32041) % uc, lang_string(32042), icon=xbmcgui.NOTIFICATION_WARNING)
         elif logged_inpremium == True:
             download_and_move(s, url)
 
@@ -113,7 +118,7 @@ def easy_epg_premium():
         s.cookies.load(ignore_discard=True)
         url = server1 + '/download/1122/'
         if logged_inpremium == False:
-            notify('Sorry %s' % uc, 'You need Premium Membership for this File', icon=xbmcgui.NOTIFICATION_WARNING)
+            notify(lang_string(32041) % uc, lang_string(32042), icon=xbmcgui.NOTIFICATION_WARNING)
         elif logged_inpremium == True:
             download_and_move(s, url)
 
@@ -124,7 +129,7 @@ def zattoo_de_premium():
         s.cookies.load(ignore_discard=True)
         url = server1 + '/download/1123/'
         if logged_inpremium == False:
-            notify('Sorry %s' % uc, 'You need Premium Membership for this File', icon=xbmcgui.NOTIFICATION_WARNING)
+            notify(lang_string(32041) % uc, lang_string(32042), icon=xbmcgui.NOTIFICATION_WARNING)
         elif logged_inpremium == True:
             download_and_move(s, url)
 
@@ -135,7 +140,7 @@ def zattoo_ch_premium():
         s.cookies.load(ignore_discard=True)
         url = server1 + '/download/1124/'
         if logged_inpremium == False:
-            notify('Sorry %s' % uc, 'You need Premium Membership for this File', icon=xbmcgui.NOTIFICATION_WARNING)
+            notify(lang_string(32041) % uc, lang_string(32042), icon=xbmcgui.NOTIFICATION_WARNING)
         elif logged_inpremium == True:
             download_and_move(s, url)
 
@@ -223,13 +228,13 @@ def startup():
 
     logged_inpremium = weblogin.doLoginPremium(datapath, username, password)
     if logged_inpremium:
-        notify('Welcome back, %s' % uc, 'Thank you for donating!', hide=hidesuccess)
+        notify(lang_string(32043) % uc, lang_string(32044), hide=hidesuccess)
     else:
         logged_in = weblogin.doLogin(datapath, username, password)
         if logged_in:
-            notify('Welcome back, %s' % uc, 'Takealug say hello', hide=hidesuccess)
+            notify(lang_string(32043) % uc, lang_string(32045), hide=hidesuccess)
         else:
-            notify('Login Failure', '%s could not login' % uc, icon=xbmcgui.NOTIFICATION_ERROR)
+            notify(lang_string(32046), lang_string(32047) % uc, icon=xbmcgui.NOTIFICATION_ERROR)
             return False
     return True
 
@@ -239,22 +244,21 @@ def startup():
 if startup():
     if auto_download:
         if speicherort == 'choose':
-            notify('Sorry %s' % uc, 'You need to choose your Downloadlocation first', icon=xbmcgui.NOTIFICATION_WARNING)
+            notify(lang_string(32041) % uc, lang_string(32048), icon=xbmcgui.NOTIFICATION_WARNING)
         elif choose_epg == 'None':
-            notify('Sorry %s' % uc, 'You need to choose your EPG first', icon=xbmcgui.NOTIFICATION_WARNING)
+            notify(lang_string(32041) % uc, lang_string(32049), icon=xbmcgui.NOTIFICATION_WARNING)
         else:
             worker(int(ADDON.getSetting('next_download')))
     else:
         try:
             if sys.argv[1] == 'manual_download':
                 if speicherort == 'choose':
-                    notify('Sorry %s' % uc, 'You need to choose your Downloadlocation first',
-                           icon=xbmcgui.NOTIFICATION_WARNING)
+                    notify(lang_string(32041) % uc, lang_string(32048), icon=xbmcgui.NOTIFICATION_WARNING)
                 elif choose_epg == 'None':
-                    notify('Sorry %s' % uc, 'You need to choose your EPG first', icon=xbmcgui.NOTIFICATION_WARNING)
+                    notify(lang_string(32041) % uc, lang_string(32049), icon=xbmcgui.NOTIFICATION_WARNING)
                 else:
                     dialog = xbmcgui.Dialog()
-                    ret = dialog.yesno('Takealug EPG Downloader', 'Start Manual Download')
+                    ret = dialog.yesno(lang_string(32000), lang_string(32050) % choose_epg)
                     if ret:
                         manual = True
                         notify('Manual Download', choose_epg)
