@@ -60,7 +60,7 @@ def download_and_move(session, url):
     r = session.get(url)
     gz_file = os.path.join(temp, "guide.gz")
 
-    with open(gz_file, 'w') as f:
+    with open(gz_file, 'wb') as f:
         f.write(r.content)
 
     with open(os.path.join(temp, 'guide.xml'), 'w') as f_xml:
