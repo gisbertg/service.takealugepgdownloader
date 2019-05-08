@@ -62,6 +62,47 @@ def download_and_move(session, url):
         with gzip.open(gz_file, 'rb') as f_in:
             f_xml.write(f_in.read())
 
+
+        tin= os.path.join(temp, 'guide.xml')
+        fout = os.path.join(speicherort,'guide.xml')    
+        xbmcvfs.copy(tin, fout)
+        xbmcvfs.delete(gz_file)
+        xbmcvfs.delete(tin) 
+        xbmcvfs.delete(cookie)    
+    Notify('Guide Stored', speicherort)
+
+def LOGIN(username,password,hidesuccess):
+        uc = username[0].upper() + username[1:]
+        lc = username.lower()
+        
+        logged_inpremium = weblogin.doLoginPremium(datapath, username, password)
+        
+        if logged_inpremium == True:
+            if hidesuccess == 'false':
+                Notify('Welcome back '+uc,'Thank you for donating!')
+                
+        elif logged_inpremium == False:
+            logged_in = weblogin.doLogin(datapath, username, password)
+        
+            if logged_in == True:
+                if hidesuccess == 'false':
+                    Notify('Welcome back '+uc,'Takealug say hello')
+                
+            elif logged_in == False:
+                Notify('Login Failure',uc+' could not login')
+    
+logged_inpremium = weblogin.doLoginPremium(datapath, username, password)
+    
+                
+def STARTUP_ROUTINES():
+        #deal with bug that happens if the datapath and/or temp doesn't exist
+        if not os.path.exists(temp):
+            os.makedirs(temp)
+        #get username and password and do login with them
+        #also get whether to hid successful login notification
+        LOGIN(username,password,hidesuccess)
+
+
     tin= os.path.join(temp, 'guide.xml')
     fout = os.path.join(speicherort,'guide.xml')
     xbmcvfs.copy(tin, fout)
