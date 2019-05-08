@@ -246,6 +246,30 @@ def startup():
 
 # Addon starts at this point
 
+def manual_download():
+    manual_download = False
+    try:
+        if sys.argv[1:][0] == 'manual_download':
+            manual_download = True
+    except:
+        pass
+    return manual_download
+
+if manual_download() == True:
+    if logged_in == True:
+        if speicherort == 'choose': 
+            notify(lang_string(32041) % uc, lang_string(32048), icon=xbmcgui.NOTIFICATION_WARNING)                    
+        else:
+            if choose_epg == 'None':
+                notify(lang_string(32041) % uc, lang_string(32049), icon=xbmcgui.NOTIFICATION_WARNING)
+            else:
+                dialog = xbmcgui.Dialog()
+                ret = dialog.yesno(lang_string(32000), lang_string(32050) % choose_epg)
+                if ret:
+                    manual = True
+                    notify('Manual Download', choose_epg)
+                    takealug_download()          
+
 if startup():
     if auto_download:
         if speicherort == 'choose':
@@ -254,21 +278,6 @@ if startup():
             notify(lang_string(32041) % uc, lang_string(32049), icon=xbmcgui.NOTIFICATION_WARNING)
         else:
             worker(int(ADDON.getSetting('next_download')))
-    else:
-        try:
-            if sys.argv[1] == 'manual_download':
-                if speicherort == 'choose':
-                    notify(lang_string(32041) % uc, lang_string(32048), icon=xbmcgui.NOTIFICATION_WARNING)
-                elif choose_epg == 'None':
-                    notify(lang_string(32041) % uc, lang_string(32049), icon=xbmcgui.NOTIFICATION_WARNING)
-                else:
-                    dialog = xbmcgui.Dialog()
-                    ret = dialog.yesno(lang_string(32000), lang_string(32050) % choose_epg)
-                    if ret:
-                        manual = True
-                        notify('Manual Download', choose_epg)
-                        takealug_download()
-        except IndexError:
-            pass
+
 
 xbmcvfs.delete(cookie)

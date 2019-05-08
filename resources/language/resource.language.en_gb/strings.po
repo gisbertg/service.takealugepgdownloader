@@ -1,7 +1,7 @@
 # XBMC Media Center language file
 # Addon Name: Takealug EPG Downloader
 # Addon id: service.takealugepgdownloader
-# Addon version: 0.3.0
+# Addon version: 0.3.1
 # Addon Provider: DeBaschdi, Sunsettrack4, Birger Jesch
 msgid ""
 msgstr ""
@@ -30,9 +30,9 @@ msgid "Takealug EPG Downloader"
 msgstr ""
 
 # Empty message string, needed for EPG Chooser
-
+## NOT Working !?
 msgctxt "#32001"
-msgid ""
+msgid "--------------------------------------------"
 msgstr ""
 
 # EPG variants
