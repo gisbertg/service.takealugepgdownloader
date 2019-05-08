@@ -100,13 +100,13 @@ def takealug_download():
         zattoo_de_premium()
     elif choose_epg == lang_string(32014):
         zattoo_ch_premium()
-    elif choose_epg == lang_string(32015):
-        de_at_ch_free()
     elif choose_epg == lang_string(32016):
-        easy_epg_free()
+        de_at_ch_free()
     elif choose_epg == lang_string(32017):
-        zattoo_de_free()
+        easy_epg_free()
     elif choose_epg == lang_string(32018):
+        zattoo_de_free()
+    elif choose_epg == lang_string(32019):
         zattoo_ch_free()
     else:
         pass
