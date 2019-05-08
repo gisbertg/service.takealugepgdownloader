@@ -58,26 +58,37 @@ def log(message, loglevel=xbmc.LOGDEBUG):
 
 def download_and_move(session, url):
     r = session.get(url)
-    gz_file = os.path.join(temp, "guide.gz")
+    ct = r.headers['Content-Type']
+    if ct == 'application/octet-stream':
+        log(r.headers['Content-Type'])
+        gz_file = os.path.join(temp, "guide.gz")
+        try:
+            with open(gz_file, 'wb') as f:
+                f.write(r.content)
 
-    with open(gz_file, 'wb') as f:
-        f.write(r.content)
+            with open(os.path.join(temp, 'guide.xml'), 'w') as f_xml:
+                with gzip.open(gz_file, 'r') as f_in:
+                    f_xml.write(f_in.read())
+        except IOError, e:
+            log('An error occurred : %s' % e.message, xbmc.LOGERROR)
+            notify(lang_string(32051), lang_string(32052), xbmcgui.NOTIFICATION_ERROR)
+            return False
 
-    with open(os.path.join(temp, 'guide.xml'), 'wb') as f_xml:
-        with gzip.open(gz_file, 'rb') as f_in:
-            f_xml.write(f_in.read())
+        tin = os.path.join(temp, 'guide.xml')
+        fout = os.path.join(speicherort, 'guide.xml')
 
-    tin = os.path.join(temp, 'guide.xml')
-    fout = os.path.join(speicherort, 'guide.xml')
-
-    if not xbmcvfs.copy(tin, fout):
-        log('Could not copy to %s' % speicherort, xbmc.LOGERROR)
+        if not xbmcvfs.copy(tin, fout):
+            log('Could not copy to %s' % speicherort, xbmc.LOGERROR)
+            return False
+        if not xbmcvfs.delete(tin):
+            log('Could not delete % s' % tin, xbmc.LOGERROR)
+            return False
+        notify(lang_string(32040), fout)
+        return True
+    else:
+        log('Wrong content-type: %s' % ct, xbmc.LOGERROR)
+        notify(lang_string(32051), lang_string(32053))
         return False
-    if not xbmcvfs.delete(tin):
-        log('Could not delete % s' % tin, xbmc.LOGERROR)
-        return False
-    notify(lang_string(32040), fout)
-    return True
 
 
 def takealug_download():

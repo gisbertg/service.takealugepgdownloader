@@ -13,6 +13,6 @@
     </category>
 
     <category label="32030">
-        <setting id="choose_epg" type="select" label="32031" lvalues="32010|32011|32012|32013|32014|32001|32015|32016|32017|32018" default="None" />
+        <setting id="choose_epg" type="select" label="32031" lvalues="32010|32011|32012|32013|32014|32001|32016|32017|32018" default="None" />
     </category>
 </settings>
