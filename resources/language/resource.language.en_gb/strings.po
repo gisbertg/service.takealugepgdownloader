@@ -61,15 +61,15 @@ msgctxt "#32015"
 msgid "Free DE AT CH 3-5 Days"
 msgstr ""
 
-msgctxt "#32017"
+msgctxt "#32016"
 msgid "Free easyEPG 3-5 Days"
 msgstr ""
 
-msgctxt "#32018"
+msgctxt "#32017"
 msgid "Free Zattoo DE 3-5 Days"
 msgstr ""
 
-msgctxt "#32019"
+msgctxt "#32018"
 msgid "Free Zattoo CH 3-5 Days"
 msgstr ""
 
