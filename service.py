@@ -58,7 +58,21 @@ def log(message, loglevel=xbmc.LOGDEBUG):
 
 def download_and_move(session, url):
     r = session.get(url)
+    ct = r.headers['Content-Type']
+    if ct == 'application/octet-stream':
+        log(r.headers['Content-Type'])
+        gz_file = os.path.join(temp, "guide.gz")
+        try:
+            with open(gz_file, 'wb') as f:
+                f.write(r.content)
 
+            with open(os.path.join(temp, 'guide.xml'), 'w') as f_xml:
+                with gzip.open(gz_file, 'r') as f_in:
+                    f_xml.write(f_in.read())
+        except IOError, e:
+            log('An error occurred : %s' % e.message, xbmc.LOGERROR)
+            notify(lang_string(32051), lang_string(32052), xbmcgui.NOTIFICATION_ERROR)
+            return False
 
         tin = os.path.join(temp, 'guide.xml')
         fout = os.path.join(speicherort, 'guide.xml')
@@ -243,30 +257,6 @@ def startup():
 
 # Addon starts at this point
 
-def manual_download():
-    manual_download = False
-    try:
-        if sys.argv[1:][0] == 'manual_download':
-            manual_download = True
-    except:
-        pass
-    return manual_download
-
-if manual_download() == True:
-    if logged_in == True:
-        if speicherort == 'choose': 
-            notify(lang_string(32041) % uc, lang_string(32048), icon=xbmcgui.NOTIFICATION_WARNING)                    
-        else:
-            if choose_epg == 'None':
-                notify(lang_string(32041) % uc, lang_string(32049), icon=xbmcgui.NOTIFICATION_WARNING)
-            else:
-                dialog = xbmcgui.Dialog()
-                ret = dialog.yesno(lang_string(32000), lang_string(32050) % choose_epg)
-                if ret:
-                    manual = True
-                    notify('Manual Download', choose_epg)
-                    takealug_download()          
-
 if startup():
     if auto_download:
         if speicherort == 'choose':
@@ -275,6 +265,21 @@ if startup():
             notify(lang_string(32041) % uc, lang_string(32049), icon=xbmcgui.NOTIFICATION_WARNING)
         else:
             worker(int(ADDON.getSetting('next_download')))
-
+    else:
+        try:
+            if sys.argv[1] == 'manual_download':
+                if speicherort == 'choose':
+                    notify(lang_string(32041) % uc, lang_string(32048), icon=xbmcgui.NOTIFICATION_WARNING)
+                elif choose_epg == 'None':
+                    notify(lang_string(32041) % uc, lang_string(32049), icon=xbmcgui.NOTIFICATION_WARNING)
+                else:
+                    dialog = xbmcgui.Dialog()
+                    ret = dialog.yesno(lang_string(32000), lang_string(32050) % choose_epg)
+                    if ret:
+                        manual = True
+                        notify('Manual Download', choose_epg)
+                        takealug_download()
+        except IndexError:
+            pass
 
 xbmcvfs.delete(cookie)
