@@ -59,7 +59,7 @@ def log(message, loglevel=xbmc.LOGDEBUG):
 def download_and_move(session, url):
     r = session.get(url)
     ct = r.headers['Content-Type']
-    if ct == 'application/octet-stream':
+    if ct == 'application/octet-stream' or 'application/x-gzip':
         log(r.headers['Content-Type'])
         gz_file = os.path.join(temp, "guide.gz")
         try:
@@ -258,28 +258,27 @@ def startup():
 # Addon starts at this point
 
 if startup():
-    if auto_download:
-        if speicherort == 'choose':
-            notify(lang_string(32041) % uc, lang_string(32048), icon=xbmcgui.NOTIFICATION_WARNING)
-        elif choose_epg == 'None':
-            notify(lang_string(32041) % uc, lang_string(32049), icon=xbmcgui.NOTIFICATION_WARNING)
-        else:
-            worker(int(ADDON.getSetting('next_download')))
-    else:
-        try:
-            if sys.argv[1] == 'manual_download':
-                if speicherort == 'choose':
-                    notify(lang_string(32041) % uc, lang_string(32048), icon=xbmcgui.NOTIFICATION_WARNING)
-                elif choose_epg == 'None':
-                    notify(lang_string(32041) % uc, lang_string(32049), icon=xbmcgui.NOTIFICATION_WARNING)
-                else:
-                    dialog = xbmcgui.Dialog()
-                    ret = dialog.yesno(lang_string(32000), lang_string(32050) % choose_epg)
-                    if ret:
-                        manual = True
-                        notify('Manual Download', choose_epg)
-                        takealug_download()
-        except IndexError:
-            pass
+    try:
+        if sys.argv[1] == 'manual_download':
+            if speicherort == 'choose':
+                notify(lang_string(32041) % uc, lang_string(32048), icon=xbmcgui.NOTIFICATION_WARNING)
+            elif choose_epg == 'None':
+                notify(lang_string(32041) % uc, lang_string(32049), icon=xbmcgui.NOTIFICATION_WARNING)
+            else:
+                dialog = xbmcgui.Dialog()
+                ret = dialog.yesno(lang_string(32000), lang_string(32050) % choose_epg)
+                if ret:
+                    manual = True
+                    notify('Manual Download', choose_epg)
+                    takealug_download()
+
+    except IndexError:
+        if auto_download:
+            if speicherort == 'choose':
+                notify(lang_string(32041) % uc, lang_string(32048), icon=xbmcgui.NOTIFICATION_WARNING)
+            elif choose_epg == 'None':
+                notify(lang_string(32041) % uc, lang_string(32049), icon=xbmcgui.NOTIFICATION_WARNING)
+            else:
+                worker(int(ADDON.getSetting('next_download')))
 
 xbmcvfs.delete(cookie)
