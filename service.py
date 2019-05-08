@@ -14,12 +14,14 @@ from datetime import datetime
 ADDON = xbmcaddon.Addon(id="service.takealugepgdownloader")
 addon_name = ADDON.getAddonInfo('name')
 addon_version = ADDON.getAddonInfo('version')
+lang_string = ADDON.getLocalizedString
+
 speicherort = ADDON.getSetting("path").decode('utf-8')
 server1 = 'https://takealug.de/wordpress'
 username = ADDON.getSetting('username')
 uc = username.capitalize()
 password = ADDON.getSetting('password')
-choose_epg = ADDON.getSetting('choose_epg')
+choose_epg = lang_string(int(ADDON.getSetting('choose_epg')) + 32010)
 auto_download = True if ADDON.getSetting('auto_download').lower() == 'true' else False
 timeswitch = int(ADDON.getSetting('timeswitch'))
 datapath = xbmc.translatePath(ADDON.getAddonInfo('profile'))
@@ -69,39 +71,26 @@ def download_and_move(session, url):
     fout = os.path.join(speicherort, 'guide.xml')
     xbmcvfs.copy(tin, fout)
     xbmcvfs.delete(tin)
+    log(speicherort)
     notify('Guide Stored', speicherort)
 
 
 def takealug_download():
-    if choose_epg == 'Premium DE AT CH 12-14Day':
+    if choose_epg == lang_string(32011):
         de_at_ch_premium()
-    else:
-        pass
-    if choose_epg == 'Premium easyEPG 12-14Day':
+    elif choose_epg == lang_string(32012):
         easy_epg_premium()
-    else:
-        pass
-    if choose_epg == 'Premium Zattoo DE 12-14Day':
+    elif choose_epg == lang_string(32013):
         zattoo_de_premium()
-    else:
-        pass
-    if choose_epg == 'Premium Zattoo CH 12-14Day':
+    elif choose_epg == lang_string(32014):
         zattoo_ch_premium()
-    else:
-        pass
-    if choose_epg == 'Free DE AT CH 3-5Day':
+    elif choose_epg == lang_string(32015):
         de_at_ch_free()
-    else:
-        pass
-    if choose_epg == 'Free easyEPG 3-5Day':
+    elif choose_epg == lang_string(32016):
         easy_epg_free()
-    else:
-        pass
-    if choose_epg == 'Free Zattoo DE 3-5Day':
+    elif choose_epg == lang_string(32017):
         zattoo_de_free()
-    else:
-        pass
-    if choose_epg == 'Free Zattoo CH 3-5Day':
+    elif choose_epg == lang_string(32018):
         zattoo_ch_free()
     else:
         pass
