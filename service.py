@@ -214,7 +214,12 @@ def worker(next_download):
             calc_next_download = calc_next_download.replace(day=calc_next_download.day + 1, hour=timeswitch, minute=0,
                                                             second=0, microsecond=0)
 
-            next_download = int(calc_next_download.strftime("%s"))
+            # Deal with a windows strftime bug (Win don't know '%s' formatting)
+            try:
+                next_download = int(calc_next_download.strftime("%s"))
+            except ValueError:
+                next_download = int(time.mktime(calc_next_download.timetuple()))
+                
             ADDON.setSetting('next_download', str(next_download))
 
 
