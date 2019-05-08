@@ -33,20 +33,23 @@ try:
 except ValueError:
     ADDON.setSetting('next_download', '0')
 
-logged_in = False
-logged_inpremium = False
+logged_in = weblogin.doLogin(datapath, username, password)
+logged_inpremium = weblogin.doLoginPremium(datapath, username, password)
 
 OSD = xbmcgui.Dialog()
 Monitor = xbmc.Monitor()
+
 
 def notify(title, message, icon=xbmcgui.NOTIFICATION_INFO, hide=False):
     if not hide:
         OSD.notification(title, message, icon)
 
+
 # make a debug logger
 
 def log(message, loglevel=xbmc.LOGDEBUG):
     xbmc.log('[%s %s] %s' % (addon_name, addon_version, str(message)), loglevel)
+
 
 # make a function for download, temporal storage and moving guide.xml to destination,
 # as this is the same for all download types
@@ -57,54 +60,13 @@ def download_and_move(session, url):
 
     with open(gz_file, 'wb') as f:
         f.write(r.content)
-    
+
     with open(os.path.join(temp, 'guide.xml'), 'wb') as f_xml:
         with gzip.open(gz_file, 'rb') as f_in:
             f_xml.write(f_in.read())
 
-
-        tin= os.path.join(temp, 'guide.xml')
-        fout = os.path.join(speicherort,'guide.xml')    
-        xbmcvfs.copy(tin, fout)
-        xbmcvfs.delete(gz_file)
-        xbmcvfs.delete(tin) 
-        xbmcvfs.delete(cookie)    
-    Notify('Guide Stored', speicherort)
-
-def LOGIN(username,password,hidesuccess):
-        uc = username[0].upper() + username[1:]
-        lc = username.lower()
-        
-        logged_inpremium = weblogin.doLoginPremium(datapath, username, password)
-        
-        if logged_inpremium == True:
-            if hidesuccess == 'false':
-                Notify('Welcome back '+uc,'Thank you for donating!')
-                
-        elif logged_inpremium == False:
-            logged_in = weblogin.doLogin(datapath, username, password)
-        
-            if logged_in == True:
-                if hidesuccess == 'false':
-                    Notify('Welcome back '+uc,'Takealug say hello')
-                
-            elif logged_in == False:
-                Notify('Login Failure',uc+' could not login')
-    
-logged_inpremium = weblogin.doLoginPremium(datapath, username, password)
-    
-                
-def STARTUP_ROUTINES():
-        #deal with bug that happens if the datapath and/or temp doesn't exist
-        if not os.path.exists(temp):
-            os.makedirs(temp)
-        #get username and password and do login with them
-        #also get whether to hid successful login notification
-        LOGIN(username,password,hidesuccess)
-
-
-    tin= os.path.join(temp, 'guide.xml')
-    fout = os.path.join(speicherort,'guide.xml')
+    tin = os.path.join(temp, 'guide.xml')
+    fout = os.path.join(speicherort, 'guide.xml')
     xbmcvfs.copy(tin, fout)
     xbmcvfs.delete(tin)
     notify('Guide Stored', speicherort)
@@ -142,14 +104,14 @@ def takealug_download():
     if choose_epg == 'Free Zattoo CH 3-5Day':
         zattoo_ch_free()
     else:
-        pass          
+        pass
 
 
 def de_at_ch_premium():
     with requests.Session() as s:
         s.cookies = LWPCookieJar(cookie)
         s.cookies.load(ignore_discard=True)
-        url = server1+'/download/879/'
+        url = server1 + '/download/879/'
         if logged_inpremium == False:
             notify('Sorry %s' % uc, 'You need Premium Membership for this File', icon=xbmcgui.NOTIFICATION_WARNING)
         elif logged_inpremium == True:
@@ -160,10 +122,10 @@ def easy_epg_premium():
     with requests.Session() as s:
         s.cookies = LWPCookieJar(cookie)
         s.cookies.load(ignore_discard=True)
-        url = server1+'/download/1122/'
+        url = server1 + '/download/1122/'
         if logged_inpremium == False:
             notify('Sorry %s' % uc, 'You need Premium Membership for this File', icon=xbmcgui.NOTIFICATION_WARNING)
-        elif logged_inpremium == True: 
+        elif logged_inpremium == True:
             download_and_move(s, url)
 
 
@@ -171,10 +133,10 @@ def zattoo_de_premium():
     with requests.Session() as s:
         s.cookies = LWPCookieJar(cookie)
         s.cookies.load(ignore_discard=True)
-        url = server1+'/download/1123/'
+        url = server1 + '/download/1123/'
         if logged_inpremium == False:
             notify('Sorry %s' % uc, 'You need Premium Membership for this File', icon=xbmcgui.NOTIFICATION_WARNING)
-        elif logged_inpremium == True: 
+        elif logged_inpremium == True:
             download_and_move(s, url)
 
 
@@ -182,10 +144,10 @@ def zattoo_ch_premium():
     with requests.Session() as s:
         s.cookies = LWPCookieJar(cookie)
         s.cookies.load(ignore_discard=True)
-        url = server1+'/download/1124/'
+        url = server1 + '/download/1124/'
         if logged_inpremium == False:
             notify('Sorry %s' % uc, 'You need Premium Membership for this File', icon=xbmcgui.NOTIFICATION_WARNING)
-        elif logged_inpremium == True: 
+        elif logged_inpremium == True:
             download_and_move(s, url)
 
 
@@ -193,7 +155,7 @@ def de_at_ch_free():
     with requests.Session() as s:
         s.cookies = LWPCookieJar(cookie)
         s.cookies.load(ignore_discard=True)
-        url = server1+'/download/1271/'
+        url = server1 + '/download/1271/'
         download_and_move(s, url)
 
 
@@ -201,7 +163,7 @@ def easy_epg_free():
     with requests.Session() as s:
         s.cookies = LWPCookieJar(cookie)
         s.cookies.load(ignore_discard=True)
-        url = server1+'/download/1125/'
+        url = server1 + '/download/1125/'
         download_and_move(s, url)
 
 
@@ -209,7 +171,7 @@ def zattoo_de_free():
     with requests.Session() as s:
         s.cookies = LWPCookieJar(cookie)
         s.cookies.load(ignore_discard=True)
-        url = server1+'/download/1126/'
+        url = server1 + '/download/1126/'
         download_and_move(s, url)
 
 
@@ -217,7 +179,7 @@ def zattoo_ch_free():
     with requests.Session() as s:
         s.cookies = LWPCookieJar(cookie)
         s.cookies.load(ignore_discard=True)
-        url = server1+'/download/1127/'
+        url = server1 + '/download/1127/'
         download_and_move(s, url)
 
 
@@ -234,15 +196,16 @@ def worker(next_download):
 
         if os.path.exists(last_file):
             last_timestamp = os.path.getmtime(last_file)
-            log('Timestamp of last downloaded archive is %s' % datetime.datetime.fromtimestamp(last_timestamp).strftime('%d.%m.%Y %H:%M'))
+            log('Timestamp of last downloaded archive is %s' % datetime.datetime.fromtimestamp(last_timestamp).strftime(
+                '%d.%m.%Y %H:%M'))
             if (int(time.time()) - 86400) < last_timestamp < int(time.time()):
-                log('Waiting for next download at %s' % datetime.datetime.fromtimestamp(next_download).strftime('%d.%m.%Y %H:%M'))
+                log('Waiting for next download at %s' % datetime.datetime.fromtimestamp(next_download).strftime(
+                    '%d.%m.%Y %H:%M'))
             else:
                 log('Archive is older than 24 hours, initiate download')
                 initiate_download = True
 
             if next_download < int(time.time()):
-
                 # suggested download time has passed (e.g. system was offline) or time is now, download epg
                 # and set a new timestamp for the next download
                 log('Download time has reached, initiate download')
@@ -254,10 +217,12 @@ def worker(next_download):
             takealug_download()
 
             calc_next_download = datetime.datetime.now()
-            calc_next_download = calc_next_download.replace(day=calc_next_download.day + 1, hour=timeswitch, minute=0, second=0, microsecond=0)
+            calc_next_download = calc_next_download.replace(day=calc_next_download.day + 1, hour=timeswitch, minute=0,
+                                                            second=0, microsecond=0)
 
             next_download = int(calc_next_download.strftime("%s"))
             ADDON.setSetting('next_download', str(next_download))
+
 
 def startup():
     # deal with bug that happens if the datapath and/or temp doesn't exist
@@ -279,6 +244,7 @@ def startup():
             return False
     return True
 
+
 # Addon starts at this point
 
 if startup():
@@ -293,9 +259,10 @@ if startup():
         try:
             if sys.argv[1] == 'manual_download':
                 if speicherort == 'choose':
-                    notify('Sorry %s' % uc, 'You need to choose your Downloadlocation first', icon=xbmcgui.NOTIFICATION_WARNING)
+                    notify('Sorry %s' % uc, 'You need to choose your Downloadlocation first',
+                           icon=xbmcgui.NOTIFICATION_WARNING)
                 elif choose_epg == 'None':
-                        notify('Sorry %s' % uc, 'You need to choose your EPG first', icon=xbmcgui.NOTIFICATION_WARNING)
+                    notify('Sorry %s' % uc, 'You need to choose your EPG first', icon=xbmcgui.NOTIFICATION_WARNING)
                 else:
                     dialog = xbmcgui.Dialog()
                     ret = dialog.yesno('Takealug EPG Downloader', 'Start Manual Download')
