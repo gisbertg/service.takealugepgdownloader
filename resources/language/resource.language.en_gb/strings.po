@@ -3,7 +3,7 @@
 # Addon id: service.takealugepgdownloader
 # Addon version: 0.3.1
 # Addon Provider: DeBaschdi, Sunsettrack4, Birger Jesch
-msgid ""
+msgid "" 
 msgstr ""
 "Project-Id-Version: XBMC-Addons\n"
 "Report-Msgid-Bugs-To: <EMAIL@ADRESS>\n"
@@ -31,8 +31,7 @@ msgstr ""
 
 # Empty message string, needed for EPG Chooser
 ## NOT Working !?
-msgctxt "#32001"
-msgid "--------------------------------------------"
+
 msgstr ""
 
 # EPG variants
@@ -57,7 +56,7 @@ msgctxt "#32014"
 msgid "Premium Zattoo CH 12-14 Days"
 msgstr ""
 
-msgctxt "#32015"
+msgctxt "#32016"
 msgid "Free DE AT CH 3-5 Days"
 msgstr ""
 
@@ -167,4 +166,16 @@ msgstr ""
 
 msgctxt "#32050"
 msgid "Start manual Download of %s?"
+msgstr ""
+
+msgctxt "#32051"
+msgid "An Error occurred"
+msgstr ""
+
+msgctxt "#32052"
+msgid "Couldn't complete Download"
+msgstr ""
+
+msgctxt "#32053"
+msgid "Downloaded File is not a GZIP"
 msgstr ""
