@@ -60,11 +60,11 @@ def download_and_move(session, url):
     r = session.get(url)
     gz_file = os.path.join(temp, "guide.gz")
 
-    with open(gz_file, 'wb') as f:
+    with open(gz_file, 'w') as f:
         f.write(r.content)
 
-    with open(os.path.join(temp, 'guide.xml'), 'wb') as f_xml:
-        with gzip.open(gz_file, 'rb') as f_in:
+    with open(os.path.join(temp, 'guide.xml'), 'w') as f_xml:
+        with gzip.open(gz_file, 'r') as f_in:
             f_xml.write(f_in.read())
 
     tin = os.path.join(temp, 'guide.xml')
