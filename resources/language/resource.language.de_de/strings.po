@@ -1,9 +1,9 @@
 # XBMC Media Center language file
 # Addon Name: Takealug EPG Downloader
 # Addon id: service.takealugepgdownloader
-# Addon version: 0.3.2
+# Addon version: 0.3.1
 # Addon Provider: DeBaschdi, Sunsettrack4, Birger Jesch
-msgid ""
+msgid "" 
 msgstr ""
 "Project-Id-Version: XBMC-Addons\n"
 "Report-Msgid-Bugs-To: <EMAIL@ADRESS>\n"
@@ -19,164 +19,164 @@ msgstr ""
 
 msgctxt "Addon Summary"
 msgid "Fetch EPG data from different sources"
-msgstr ""
+msgstr "Stellt EPG-Daten aus verschiedenen Quellen bereit."
 
 msgctxt "Addon Description"
 msgid "Fetch EPG data in various completitions for Germany Austria and Switzerland. Offers premium values for registered users.\nNeeds Takealug account. More informations You'll find at www.takealug.de. "
-msgstr ""
+msgstr "Stellt EPG-Daten für Deutschland, Österreich und der Schweiz in verschiedenen Varianten zur Verfügung. Bietet Premium EPG für registrierte Nutzer an. Benötigt einen Account auf Takealug. Mehr Informationen gibt es auf www.takealug.de. "
 
 msgctxt "#32000"
 msgid "Takealug EPG Downloader"
-msgstr ""
+msgstr "Takealug EPG Downloader"
 
 # Empty message string, needed for EPG Chooser
 
 msgctxt "#32001"
 msgid " "
-msgstr ""
+msgstr " "
 
 # EPG variants
 
 msgctxt "#32010"
 msgid "None"
-msgstr ""
+msgstr "None"
 
 msgctxt "#32011"
 msgid "Premium DE AT CH 12-14 Days"
-msgstr ""
+msgstr "Premium DE AT CH 12-14 Tage"
 
 msgctxt "#32012"
 msgid "Premium easyEPG 12-14 Days"
-msgstr ""
+msgstr "Premium easyEPG 12-14 Tage"
 
 msgctxt "#32013"
 msgid "Premium Zattoo DE 12-14 Days"
-msgstr ""
+msgstr "Premium Zattoo DE 12-14 Tage"
 
 msgctxt "#32014"
 msgid "Premium Zattoo CH 12-14 Days"
-msgstr ""
+msgstr "Premium Zattoo CH 12-14 Tage"
 
 msgctxt "#32016"
 msgid "Free DE AT CH 3-5 Days"
-msgstr ""
+msgstr "Free DE AT CH 3-5 Tage"
 
 msgctxt "#32017"
 msgid "Free easyEPG 3-5 Days"
-msgstr ""
+msgstr "Free easyEPG 3-5 Tage"
 
 msgctxt "#32018"
 msgid "Free Zattoo DE 3-5 Days"
-msgstr ""
+msgstr "Free Zattoo DE 3-5 Tage"
 
 msgctxt "#32019"
 msgid "Free Zattoo CH 3-5 Days"
-msgstr ""
+msgstr "Free Zattoo CH 3-5 Tage"
 
 # Setup
 
 msgctxt "#32020"
 msgid "Settings"
-msgstr ""
+msgstr "Einstellungen"
 
 msgctxt "#32021"
 msgid "Hide Login Messages"
-msgstr ""
+msgstr "Unterdrücke Login-Meldungen"
 
 msgctxt "#32022"
 msgid "Takealug Account"
-msgstr ""
+msgstr "Takealug Zugangsdaten"
 
 msgctxt "#32023"
 msgid "Username"
-msgstr ""
+msgstr "Nutzername"
 
 msgctxt "#32024"
 msgid "Password"
-msgstr ""
+msgstr "Passwort"
 
 msgctxt "#32025"
 msgid "Use automated Download"
-msgstr ""
+msgstr "Verwende automatisierten Download"
 
 msgctxt "#32026"
 msgid "Daily Download at"
-msgstr ""
+msgstr "täglicher Download um"
 
 msgctxt "#32027"
 msgid "Download Folder"
-msgstr ""
+msgstr "Download Ordner"
 
 msgctxt "#32028"
 msgid "Actions"
-msgstr ""
+msgstr "Aktionen"
 
 msgctxt "#32029"
 msgid "Initiate manual Download now"
-msgstr ""
+msgstr "Starte manuellen Download jetzt"
 
 msgctxt "#32030"
 msgid "EPG Sources"
-msgstr ""
+msgstr "EPG-Quellen"
 
 msgctxt "#32031"
 msgid "Choose EPG File"
-msgstr ""
+msgstr "Wähle EPG-Datei aus"
 
 # OSD Notifications
 
 msgctxt "#32040"
 msgid "EPG File stored"
-msgstr ""
+msgstr "EPG-Datei wurde gespeichert"
 
 msgctxt "#32041"
 msgid "Sorry %s"
-msgstr ""
+msgstr "Entschuldigung %s"
 
 msgctxt "#32042"
 msgid "You need Premium Membership for this File"
-msgstr ""
+msgstr "Du benötigst eine Premium-Mitgliedschaft für diese Datei"
 
 msgctxt "#32043"
 msgid "Welcome back, %s"
-msgstr ""
+msgstr "Willkommen zurück, %s"
 
 msgctxt "#32044"
 msgid "Thank You for donating!"
-msgstr ""
+msgstr "Vielen Dank für die Zuwendung!"
 
 msgctxt "#32045"
 msgid "Takealug say Hello!"
-msgstr ""
+msgstr "Takealug begrüsst Dich!"
 
 msgctxt "#32046"
 msgid "Login Failure"
-msgstr ""
+msgstr "Anmeldefehler"
 
 msgctxt "#32047"
 msgid "%s couldn't logged in"
-msgstr ""
+msgstr "%s kann nicht eingeloggt werden"
 
 msgctxt "#32048"
 msgid "You need to choose your Downloadlocation first"
-msgstr ""
+msgstr "Du musst zuerst den Downloadordner auswählen"
 
 msgctxt "#32049"
 msgid "You need to choose your EPG first"
-msgstr ""
+msgstr "Du musst zuerst deine EPG-Variante auswählen"
 
 msgctxt "#32050"
 msgid "Start manual Download of %s?"
-msgstr ""
+msgstr "Soll der mauelle Download von %s jetzt gestartet werden?"
 
 msgctxt "#32051"
 msgid "An Error occurred"
-msgstr ""
+msgstr "Ein Fehler ist aufgetreten"
 
 msgctxt "#32052"
 msgid "Couldn't complete Download"
-msgstr ""
+msgstr "Der Download konnte nicht abgeschlossen werden"
 
 msgctxt "#32053"
 msgid "Downloaded File is not a GZIP"
-msgstr ""
+msgstr "Die heruntergeladene Datei ist keine GZIP"

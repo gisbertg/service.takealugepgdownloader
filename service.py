@@ -59,18 +59,19 @@ def log(message, loglevel=xbmc.LOGDEBUG):
 def download_and_move(session, url):
     r = session.get(url)
     ct = r.headers['Content-Type']
-    if ct == 'application/octet-stream' or 'application/x-gzip':
-        log(r.headers['Content-Type'])
+    log('Download file of Content-Type: %s' % ct)
+
+    if ct in ('application/octet-stream', 'application/x-gzip', 'application/binary'):
         gz_file = os.path.join(temp, "guide.gz")
         try:
             with open(gz_file, 'wb') as f:
                 f.write(r.content)
 
             with open(os.path.join(temp, 'guide.xml'), 'w') as f_xml:
-                with gzip.open(gz_file, 'r') as f_in:
+                with gzip.open(gz_file, 'rb') as f_in:
                     f_xml.write(f_in.read())
-        except IOError, e:
-            log('An error occurred : %s' % e.message, xbmc.LOGERROR)
+        except IOError as e:
+            log('An error occurred: %s' % e.message, xbmc.LOGERROR)
             notify(lang_string(32051), lang_string(32052), xbmcgui.NOTIFICATION_ERROR)
             return False
 
