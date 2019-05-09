@@ -203,8 +203,6 @@ def worker(next_download):
         # check if property 'last_download' in settings already exists and check timestamp of this file.
         # if timestamp is not older than 24 hours, there's nothing to do, otherwise download GZIP.
 
-        last_file = os.path.join(temp, 'guide.gz')
-
         try:
             last_timestamp = int(ADDON.getSetting('last_download'))
         except ValueError:
