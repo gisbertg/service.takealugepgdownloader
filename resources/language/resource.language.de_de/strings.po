@@ -180,3 +180,8 @@ msgstr "Der Download konnte nicht abgeschlossen werden"
 msgctxt "#32053"
 msgid "Downloaded File is not a GZIP"
 msgstr "Die heruntergeladene Datei ist keine GZIP"
+
+msgctxt "#32054"
+msgid "Initalize Autodownload"
+msgstr "Starte automatischen Download"
+

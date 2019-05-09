@@ -30,11 +30,16 @@ cookie = os.path.join(datapath, "cookies.lwp")
 temp = os.path.join(datapath, "temp")
 hidesuccess = True if ADDON.getSetting('hide-successful-login-messages').lower() == 'true' else False
 
-# deal with setting 'next_download' which not exists at first time
+# deal with setting 'last_download/next_download' which not exists at first time
+
 try:
     next_download = int(ADDON.getSetting('next_download'))
 except ValueError:
     ADDON.setSetting('next_download', str(int(time.time())))
+try:
+    last_download = int(ADDON.getSetting('last_download'))
+except ValueError:
+    ADDON.setSetting('last_download', str(int(time.time())))
 
 logged_in = weblogin.doLogin(datapath, username, password)
 logged_inpremium = weblogin.doLoginPremium(datapath, username, password)
@@ -85,6 +90,7 @@ def download_and_move(session, url):
             log('Could not delete % s' % tin, xbmc.LOGERROR)
             return False
         notify(lang_string(32040), fout)
+        ADDON.setSetting('last_download', str(int(time.time())))
         return True
     else:
         log('Wrong content-type: %s' % ct, xbmc.LOGERROR)
@@ -194,14 +200,17 @@ def worker(next_download):
         log('Worker walk through...')
         initiate_download = False
 
-        # check if guide.gz already exists and check timestamp of this file.
-        # if timestamp is not older than 24 hours, there's nothing to do,
-        # otherwise download it.
+        # check if property 'last_download' in settings already exists and check timestamp of this file.
+        # if timestamp is not older than 24 hours, there's nothing to do, otherwise download GZIP.
 
         last_file = os.path.join(temp, 'guide.gz')
 
-        if os.path.exists(last_file):
-            last_timestamp = os.path.getmtime(last_file)
+        try:
+            last_timestamp = int(ADDON.getSetting('last_download'))
+        except ValueError:
+            last_timestamp = 0
+
+        if last_timestamp > 0:
             log('Timestamp of last downloaded archive is %s' % datetime.fromtimestamp(last_timestamp).strftime(
                 '%d.%m.%Y %H:%M'))
             if (int(time.time()) - 86400) < last_timestamp < int(time.time()):
@@ -220,7 +229,10 @@ def worker(next_download):
             initiate_download = True
 
         if initiate_download:
+            notify(lang_string(32000), lang_string(32054))
+            weblogin.doLogin(datapath, username, password)
             takealug_download()
+            xbmcvfs.delete(cookie)
 
             calc_next_download = datetime.now()
             calc_next_download = calc_next_download.replace(day=calc_next_download.day + 1, hour=timeswitch, minute=0,
