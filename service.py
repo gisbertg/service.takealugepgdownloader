@@ -10,6 +10,7 @@ from resources.lib import weblogin
 from cookielib import LWPCookieJar
 import time
 from datetime import datetime
+from io import BytesIO
 
 ADDON = xbmcaddon.Addon(id="service.takealugepgdownloader")
 addon_name = ADDON.getAddonInfo('name')
@@ -59,25 +60,24 @@ def log(message, loglevel=xbmc.LOGDEBUG):
 def download_and_move(session, url):
     r = session.get(url)
     ct = r.headers['Content-Type']
+
     log('Download file of Content-Type: %s' % ct)
 
     if ct in ('application/octet-stream', 'application/x-gzip', 'application/binary'):
-        gz_file = os.path.join(temp, "guide.gz")
-        try:
-            with open(gz_file, 'wb') as f:
-                f.write(r.content)
 
-            with open(os.path.join(temp, 'guide.xml'), 'w') as f_xml:
-                with gzip.open(gz_file, 'rb') as f_in:
-                    f_xml.write(f_in.read())
-        except IOError as e:
-            log('An error occurred: %s' % e.message, xbmc.LOGERROR)
-            notify(lang_string(32051), lang_string(32052), xbmcgui.NOTIFICATION_ERROR)
-            return False
+        # ct is a binary file, write it out directly to memory
+        # because combined read/write-IO on storage is a Android nightmare
+
+        gz_file = gzip.GzipFile(fileobj=BytesIO(r.content))
 
         tin = os.path.join(temp, 'guide.xml')
         fout = os.path.join(speicherort, 'guide.xml')
 
+        with open(tin, 'w') as f_xml:
+            f_xml.write(gz_file.read())
+
+        # copy to destination
+        
         if not xbmcvfs.copy(tin, fout):
             log('Could not copy to %s' % speicherort, xbmc.LOGERROR)
             return False
