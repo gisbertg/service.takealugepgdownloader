@@ -180,3 +180,8 @@ msgstr ""
 msgctxt "#32053"
 msgid "Downloaded File is not a GZIP"
 msgstr ""
+
+msgctxt "#32054"
+msgid "Initalize Autodownload"
+msgstr ""
+
