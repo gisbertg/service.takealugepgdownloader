@@ -134,7 +134,7 @@ msgid "Sorry %s"
 msgstr ""
 
 msgctxt "#32042"
-msgid "You need Premium Membership for this File"
+msgid "Premium Membership required"
 msgstr ""
 
 msgctxt "#32043"
@@ -158,11 +158,11 @@ msgid "%s couldn't logged in"
 msgstr ""
 
 msgctxt "#32048"
-msgid "You need to choose your Downloadlocation first"
+msgid "Sorry %s, before downloading You have to choose your Downloadlocation first."
 msgstr ""
 
 msgctxt "#32049"
-msgid "You need to choose your EPG first"
+msgid "Sorry %s, You have to choose the kind of EPG data depending on your Takealug account first."
 msgstr ""
 
 msgctxt "#32050"
@@ -183,5 +183,13 @@ msgstr ""
 
 msgctxt "#32054"
 msgid "Initalize Autodownload"
+msgstr ""
+
+msgctxt "#32055"
+msgid "Choose Downloadlocation first"
+msgstr ""
+
+msgctxt "#32056"
+msgid "Choose kind of EPG first"
 msgstr ""
 
