@@ -131,11 +131,11 @@ msgstr "EPG-Datei wurde gespeichert"
 
 msgctxt "#32041"
 msgid "Sorry %s"
-msgstr "Entschuldigung %s"
+msgstr "Sorry %s"
 
 msgctxt "#32042"
-msgid "You need Premium Membership for this File"
-msgstr "Du benötigst eine Premium-Mitgliedschaft für diese Datei"
+msgid "Premium Membership required"
+msgstr "Premium-Mitgliedschaft erforderlich"
 
 msgctxt "#32043"
 msgid "Welcome back, %s"
@@ -158,12 +158,12 @@ msgid "%s couldn't logged in"
 msgstr "%s kann nicht eingeloggt werden"
 
 msgctxt "#32048"
-msgid "You need to choose your Downloadlocation first"
-msgstr "Du musst zuerst den Downloadordner auswählen"
+msgid "Sorry %s, before downloading You have to choose your Downloadlocation first."
+msgstr "Sorry %s, bitte zuerst den Ordner für den Download auswählen."
 
 msgctxt "#32049"
-msgid "You need to choose your EPG first"
-msgstr "Du musst zuerst deine EPG-Variante auswählen"
+msgid "Sorry %s, You have to choose the kind of EPG data depending on your Takealug account first."
+msgstr "Sorry %s, bitte zuerst den Typ des EPGs (in Abhängigkeit vom Takealug Account) auswählen."
 
 msgctxt "#32050"
 msgid "Start manual Download of %s?"
@@ -185,3 +185,10 @@ msgctxt "#32054"
 msgid "Initalize Autodownload"
 msgstr "Starte automatischen Download"
 
+msgctxt "#32055"
+msgid "Choose Downloadlocation first"
+msgstr "Downloadordner auswählen"
+
+msgctxt "#32056"
+msgid "Choose kind of EPG first"
+msgstr "Typ des EPGs auswählen"
