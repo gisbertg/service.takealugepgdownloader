@@ -66,8 +66,6 @@ def download_and_move(session, url):
     r = session.get(url)
     ct = r.headers['Content-Type']
 
-    log('Download file of Content-Type: %s' % ct)
-
     if ct in ('application/octet-stream', 'application/x-gzip', 'application/binary'):
 
         # ct is a binary file, write it out directly to memory
@@ -100,21 +98,21 @@ def download_and_move(session, url):
 
 def takealug_download():
     if choose_epg == lang_string(32011):
-        de_at_ch_premium()
+        return de_at_ch_premium()
     elif choose_epg == lang_string(32012):
-        easy_epg_premium()
+        return easy_epg_premium()
     elif choose_epg == lang_string(32013):
-        zattoo_de_premium()
+        return zattoo_de_premium()
     elif choose_epg == lang_string(32014):
-        zattoo_ch_premium()
+        return zattoo_ch_premium()
     elif choose_epg == lang_string(32016):
-        de_at_ch_free()
+        return de_at_ch_free()
     elif choose_epg == lang_string(32017):
-        easy_epg_free()
+        return easy_epg_free()
     elif choose_epg == lang_string(32018):
-        zattoo_de_free()
+        return zattoo_de_free()
     elif choose_epg == lang_string(32019):
-        zattoo_ch_free()
+        return zattoo_ch_free()
     else:
         pass
 
@@ -127,7 +125,7 @@ def de_at_ch_premium():
         if logged_inpremium == False:
             notify(lang_string(32041) % uc, lang_string(32042), icon=xbmcgui.NOTIFICATION_WARNING)
         elif logged_inpremium == True:
-            download_and_move(s, url)
+            return download_and_move(s, url)
 
 
 def easy_epg_premium():
@@ -138,7 +136,7 @@ def easy_epg_premium():
         if logged_inpremium == False:
             notify(lang_string(32041) % uc, lang_string(32042), icon=xbmcgui.NOTIFICATION_WARNING)
         elif logged_inpremium == True:
-            download_and_move(s, url)
+            return download_and_move(s, url)
 
 
 def zattoo_de_premium():
@@ -149,7 +147,7 @@ def zattoo_de_premium():
         if logged_inpremium == False:
             notify(lang_string(32041) % uc, lang_string(32042), icon=xbmcgui.NOTIFICATION_WARNING)
         elif logged_inpremium == True:
-            download_and_move(s, url)
+            return download_and_move(s, url)
 
 
 def zattoo_ch_premium():
@@ -160,7 +158,7 @@ def zattoo_ch_premium():
         if logged_inpremium == False:
             notify(lang_string(32041) % uc, lang_string(32042), icon=xbmcgui.NOTIFICATION_WARNING)
         elif logged_inpremium == True:
-            download_and_move(s, url)
+            return download_and_move(s, url)
 
 
 def de_at_ch_free():
@@ -168,7 +166,7 @@ def de_at_ch_free():
         s.cookies = LWPCookieJar(cookie)
         s.cookies.load(ignore_discard=True)
         url = server1 + '/download/1271/'
-        download_and_move(s, url)
+        return download_and_move(s, url)
 
 
 def easy_epg_free():
@@ -176,7 +174,7 @@ def easy_epg_free():
         s.cookies = LWPCookieJar(cookie)
         s.cookies.load(ignore_discard=True)
         url = server1 + '/download/1125/'
-        download_and_move(s, url)
+        return download_and_move(s, url)
 
 
 def zattoo_de_free():
@@ -184,7 +182,7 @@ def zattoo_de_free():
         s.cookies = LWPCookieJar(cookie)
         s.cookies.load(ignore_discard=True)
         url = server1 + '/download/1126/'
-        download_and_move(s, url)
+        return download_and_move(s, url)
 
 
 def zattoo_ch_free():
@@ -192,10 +190,11 @@ def zattoo_ch_free():
         s.cookies = LWPCookieJar(cookie)
         s.cookies.load(ignore_discard=True)
         url = server1 + '/download/1127/'
-        download_and_move(s, url)
+        return download_and_move(s, url)
 
 
 def worker(next_download):
+    dl_attempts = 0
     while not Monitor.waitForAbort(60):
         log('Worker walk through...')
         initiate_download = False
@@ -227,10 +226,18 @@ def worker(next_download):
             initiate_download = True
 
         if initiate_download:
-            notify(lang_string(32000), lang_string(32054))
-            weblogin.doLogin(datapath, username, password)
-            takealug_download()
-            xbmcvfs.delete(cookie)
+            if dl_attempts < 3:
+                notify(lang_string(32000), lang_string(32054))
+                weblogin.doLogin(datapath, username, password)
+                if takealug_download():
+                    dl_attempts = 0
+                    xbmcvfs.delete(cookie)
+                else:
+                    dl_attempts += 1
+            else:
+                # has tried 3x to download files in a row, giving up
+                ADDON.setSetting('last_download', str(int(time.time())))
+                log("Tried downlad 3x without success", xbmc.LOGERROR)
 
             calc_next_download = datetime.now()
             calc_next_download = calc_next_download.replace(day=calc_next_download.day + 1, hour=timeswitch, minute=0,
