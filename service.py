@@ -104,17 +104,17 @@ def takealug_download():
     elif choose_epg == lang_string(32012):
         easy_epg_premium()
     elif choose_epg == lang_string(32013):
-        zattoo_de_premium()
+        zattoo_premium()
     elif choose_epg == lang_string(32014):
-        zattoo_ch_premium()
+        wilmaa_premium()
     elif choose_epg == lang_string(32016):
         de_at_ch_free()
     elif choose_epg == lang_string(32017):
         easy_epg_free()
     elif choose_epg == lang_string(32018):
-        zattoo_de_free()
+        zattoo_free()
     elif choose_epg == lang_string(32019):
-        zattoo_ch_free()
+        wilmaa_free()
     else:
         pass
 
@@ -141,7 +141,7 @@ def easy_epg_premium():
             download_and_move(s, url)
 
 
-def zattoo_de_premium():
+def zattoo_premium():
     with requests.Session() as s:
         s.cookies = LWPCookieJar(cookie)
         s.cookies.load(ignore_discard=True)
@@ -152,7 +152,7 @@ def zattoo_de_premium():
             download_and_move(s, url)
 
 
-def zattoo_ch_premium():
+def wilmaa_premium():
     with requests.Session() as s:
         s.cookies = LWPCookieJar(cookie)
         s.cookies.load(ignore_discard=True)
@@ -179,7 +179,7 @@ def easy_epg_free():
         download_and_move(s, url)
 
 
-def zattoo_de_free():
+def zattoo_free():
     with requests.Session() as s:
         s.cookies = LWPCookieJar(cookie)
         s.cookies.load(ignore_discard=True)
@@ -187,7 +187,7 @@ def zattoo_de_free():
         download_and_move(s, url)
 
 
-def zattoo_ch_free():
+def wilmaa_free():
     with requests.Session() as s:
         s.cookies = LWPCookieJar(cookie)
         s.cookies.load(ignore_discard=True)
