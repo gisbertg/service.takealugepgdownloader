@@ -123,6 +123,22 @@ msgctxt "#32031"
 msgid "Choose EPG File"
 msgstr ""
 
+msgctxt "#32032"
+msgid "Download EPG immediately if EPG is older than"
+msgstr ""
+
+msgctxt "#32033"
+msgid "24 Hours"
+msgstr ""
+
+msgctxt "#32034"
+msgid "36 Hours"
+msgstr ""
+
+msgctxt "#32035"
+msgid "48 Hours"
+msgstr ""
+
 # OSD Notifications
 
 msgctxt "#32040"

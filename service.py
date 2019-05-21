@@ -25,6 +25,7 @@ password = ADDON.getSetting('password')
 choose_epg = lang_string(int(ADDON.getSetting('choose_epg')) + 32010)
 auto_download = True if ADDON.getSetting('auto_download').lower() == 'true' else False
 timeswitch = int(ADDON.getSetting('timeswitch'))
+timeoffset = (int(ADDON.getSetting('timeoffset')) * 12 + 24) * 3600
 datapath = xbmc.translatePath(ADDON.getAddonInfo('profile'))
 cookie = os.path.join(datapath, "cookies.lwp")
 temp = os.path.join(datapath, "temp")
@@ -123,7 +124,7 @@ def takealug_download():
         log('Getting %s' % classifier[choose_epg].get('comment', 'not classified'))
         if not logged_inpremium and classifier[choose_epg].get('premium', False):
             notify(lang_string(32041) % uc, lang_string(32042), icon=xbmcgui.NOTIFICATION_WARNING)
-            log('No access to premium content')
+            log('Access to premium content forbidden')
             return False
         return download_and_move(s, url)
 
@@ -145,7 +146,7 @@ def worker(next_download):
         if last_timestamp > 0:
             log('Timestamp of last downloaded archive is %s' % datetime.fromtimestamp(last_timestamp).strftime(
                 '%d.%m.%Y %H:%M'))
-            if (int(time.time()) - 86400) < last_timestamp < int(time.time()):
+            if (int(time.time()) - timeoffset) < last_timestamp < int(time.time()):
                 log('Waiting for next download at %s' % datetime.fromtimestamp(next_download).strftime(
                     '%d.%m.%Y %H:%M'))
             else:
