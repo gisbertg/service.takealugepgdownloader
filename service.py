@@ -150,7 +150,7 @@ def worker(next_download):
                 log('Waiting for next download at %s' % datetime.fromtimestamp(next_download).strftime(
                     '%d.%m.%Y %H:%M'))
             else:
-                log('Archive is older than 24 hours, initiate download')
+                log('Archive is older than %s hours, initiate download' % (timeoffset/86400))
                 initiate_download = True
 
             if next_download < int(time.time()):
