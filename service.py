@@ -48,6 +48,22 @@ OSD = xbmcgui.Dialog()
 Monitor = xbmc.Monitor()
 
 
+# list of i18n language strings (see EPG types in language files here), server folder and premium service (bool)
+# as classifier, simplify source code
+#
+# structure: {str EPG language string: {'folder': str server folder, 'premium': bool premium service}}
+
+classifier = {lang_string(32011): {'folder': '879', 'premium': True},
+              lang_string(32012): {'folder': '1122', 'premium': True},
+              lang_string(32013): {'folder': '1123', 'premium': True},
+              lang_string(32014): {'folder': '1124', 'premium': True},
+              lang_string(32016): {'folder': '1271', 'premium': False},
+              lang_string(32017): {'folder': '1125', 'premium': False},
+              lang_string(32018): {'folder': '1126', 'premium': False},
+              lang_string(32019): {'folder': '1127', 'premium': False},
+              }
+
+
 def notify(title, message, icon=xbmcgui.NOTIFICATION_INFO, hide=False):
     if not hide:
         OSD.notification(title, message, icon)
