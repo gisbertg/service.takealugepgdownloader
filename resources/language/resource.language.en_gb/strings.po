@@ -1,7 +1,7 @@
 # XBMC Media Center language file
 # Addon Name: Takealug EPG Downloader
 # Addon id: service.takealugepgdownloader
-# Addon version: 0.3.3
+# Addon version: 0.4.2
 # Addon Provider: DeBaschdi, Sunsettrack4, Birger Jesch
 msgid ""
 msgstr ""
@@ -50,11 +50,11 @@ msgid "Premium easyEPG 12-14 Days"
 msgstr ""
 
 msgctxt "#32013"
-msgid "Premium Zattoo DE 12-14 Days"
+msgid "Premium Zattoo 12-14 Days"
 msgstr ""
 
 msgctxt "#32014"
-msgid "Premium Zattoo CH 12-14 Days"
+msgid "Premium Wilmaa 12-14 Days"
 msgstr ""
 
 msgctxt "#32016"
@@ -66,11 +66,11 @@ msgid "Free easyEPG 3-5 Days"
 msgstr ""
 
 msgctxt "#32018"
-msgid "Free Zattoo DE 3-5 Days"
+msgid "Free Zattoo 3-5 Days"
 msgstr ""
 
 msgctxt "#32019"
-msgid "Free Zattoo CH 3-5 Days"
+msgid "Free Wilmaa 3-5 Days"
 msgstr ""
 
 # Setup
