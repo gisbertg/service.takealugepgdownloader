@@ -25,6 +25,7 @@ password = ADDON.getSetting('password')
 choose_epg = lang_string(int(ADDON.getSetting('choose_epg')) + 32010)
 auto_download = True if ADDON.getSetting('auto_download').lower() == 'true' else False
 timeswitch = int(ADDON.getSetting('timeswitch'))
+timeoffset = (int(ADDON.getSetting('timeoffset')) * 12 + 24) * 3600
 datapath = xbmc.translatePath(ADDON.getAddonInfo('profile'))
 cookie = os.path.join(datapath, "cookies.lwp")
 temp = os.path.join(datapath, "temp")
@@ -51,16 +52,16 @@ Monitor = xbmc.Monitor()
 # list of i18n language strings (see EPG types in language files here), server folder and premium service (bool)
 # as classifier, simplify source code
 #
-# structure: {str EPG language string: {'folder': str server folder, 'premium': bool premium service}}
+# structure: {str EPG language string: {'folder': str server folder, 'premium': bool premium service, 'comment': str simple user comment}}
 
-classifier = {lang_string(32011): {'folder': '879', 'premium': True},
-              lang_string(32012): {'folder': '1122', 'premium': True},
-              lang_string(32013): {'folder': '1123', 'premium': True},
-              lang_string(32014): {'folder': '1124', 'premium': True},
-              lang_string(32016): {'folder': '1271', 'premium': False},
-              lang_string(32017): {'folder': '1125', 'premium': False},
-              lang_string(32018): {'folder': '1126', 'premium': False},
-              lang_string(32019): {'folder': '1127', 'premium': False},
+classifier = {lang_string(32011): {'folder': '879', 'premium': True, 'comment': 'de_at_ch_premium'},
+              lang_string(32012): {'folder': '1122', 'premium': True, 'comment': 'easy_epg_premium'},
+              lang_string(32013): {'folder': '1123', 'premium': True, 'comment': 'zattoo_premium'},
+              lang_string(32014): {'folder': '1124', 'premium': True, 'comment': 'wilmaa_premium'},
+              lang_string(32016): {'folder': '1271', 'premium': False, 'comment': 'de_at_ch_free'},
+              lang_string(32017): {'folder': '1125', 'premium': False, 'comment': 'easy_epg_free'},
+              lang_string(32018): {'folder': '1126', 'premium': False, 'comment': 'zattoo_free'},
+              lang_string(32019): {'folder': '1127', 'premium': False, 'comment': 'wilmaa_free'},
               }
 
 
@@ -113,99 +114,18 @@ def download_and_move(session, url):
 
 
 def takealug_download():
-    if choose_epg == lang_string(32011):
-        return de_at_ch_premium()
-    elif choose_epg == lang_string(32012):
-        return easy_epg_premium()
-    elif choose_epg == lang_string(32013):
-        return zattoo_premium()
-    elif choose_epg == lang_string(32014):
-        wilmaa_premium()
-    elif choose_epg == lang_string(32016):
-        return de_at_ch_free()
-    elif choose_epg == lang_string(32017):
-        return easy_epg_free()
-    elif choose_epg == lang_string(32018):
-        return zattoo_free()
-    elif choose_epg == lang_string(32019):
-        return wilmaa_free()
-    else:
-        pass
+    if choose_epg not in classifier:
+        return False
 
-
-def de_at_ch_premium():
     with requests.Session() as s:
         s.cookies = LWPCookieJar(cookie)
         s.cookies.load(ignore_discard=True)
-        url = server1 + '/download/879/'
-        if logged_inpremium == False:
+        url = server1 + '/download/' + classifier[choose_epg].get('folder', '')
+        log('Getting %s' % classifier[choose_epg].get('comment', 'not classified'))
+        if not logged_inpremium and classifier[choose_epg].get('premium', False):
             notify(lang_string(32041) % uc, lang_string(32042), icon=xbmcgui.NOTIFICATION_WARNING)
-        elif logged_inpremium == True:
-            return download_and_move(s, url)
-
-
-def easy_epg_premium():
-    with requests.Session() as s:
-        s.cookies = LWPCookieJar(cookie)
-        s.cookies.load(ignore_discard=True)
-        url = server1 + '/download/1122/'
-        if logged_inpremium == False:
-            notify(lang_string(32041) % uc, lang_string(32042), icon=xbmcgui.NOTIFICATION_WARNING)
-        elif logged_inpremium == True:
-            return download_and_move(s, url)
-
-
-def zattoo_premium():
-    with requests.Session() as s:
-        s.cookies = LWPCookieJar(cookie)
-        s.cookies.load(ignore_discard=True)
-        url = server1 + '/download/1123/'
-        if logged_inpremium == False:
-            notify(lang_string(32041) % uc, lang_string(32042), icon=xbmcgui.NOTIFICATION_WARNING)
-        elif logged_inpremium == True:
-            return download_and_move(s, url)
-
-
-def wilmaa_premium():
-    with requests.Session() as s:
-        s.cookies = LWPCookieJar(cookie)
-        s.cookies.load(ignore_discard=True)
-        url = server1 + '/download/1124/'
-        if logged_inpremium == False:
-            notify(lang_string(32041) % uc, lang_string(32042), icon=xbmcgui.NOTIFICATION_WARNING)
-        elif logged_inpremium == True:
-            return download_and_move(s, url)
-
-
-def de_at_ch_free():
-    with requests.Session() as s:
-        s.cookies = LWPCookieJar(cookie)
-        s.cookies.load(ignore_discard=True)
-        url = server1 + '/download/1271/'
-        return download_and_move(s, url)
-
-
-def easy_epg_free():
-    with requests.Session() as s:
-        s.cookies = LWPCookieJar(cookie)
-        s.cookies.load(ignore_discard=True)
-        url = server1 + '/download/1125/'
-        return download_and_move(s, url)
-
-
-def zattoo_free():
-    with requests.Session() as s:
-        s.cookies = LWPCookieJar(cookie)
-        s.cookies.load(ignore_discard=True)
-        url = server1 + '/download/1126/'
-        return download_and_move(s, url)
-
-
-def wilmaa_free():
-    with requests.Session() as s:
-        s.cookies = LWPCookieJar(cookie)
-        s.cookies.load(ignore_discard=True)
-        url = server1 + '/download/1127/'
+            log('Access to premium content forbidden')
+            return False
         return download_and_move(s, url)
 
 
@@ -226,11 +146,11 @@ def worker(next_download):
         if last_timestamp > 0:
             log('Timestamp of last downloaded archive is %s' % datetime.fromtimestamp(last_timestamp).strftime(
                 '%d.%m.%Y %H:%M'))
-            if (int(time.time()) - 86400) < last_timestamp < int(time.time()):
+            if (int(time.time()) - timeoffset) < last_timestamp < int(time.time()):
                 log('Waiting for next download at %s' % datetime.fromtimestamp(next_download).strftime(
                     '%d.%m.%Y %H:%M'))
             else:
-                log('Archive is older than 24 hours, initiate download')
+                log('Archive is older than %s hours, initiate download' % (timeoffset/86400))
                 initiate_download = True
 
             if next_download < int(time.time()):
